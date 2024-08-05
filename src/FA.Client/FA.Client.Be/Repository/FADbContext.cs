@@ -6,6 +6,7 @@ namespace FA.Client.Be.Repository;
 public class FADbContext : DbContext
 {
     public List<UserEntity> Users { get; set; }
+    public List<CityEntity> Cities { get; set; }
     
     public FADbContext(DbContextOptions<FADbContext> options)
         : base(options)
@@ -16,5 +17,7 @@ public class FADbContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<UserEntity>().HasKey(x => x.Id);
+
+        modelBuilder.Entity<CityEntity>().HasKey(x => x.Id);
     }
 }

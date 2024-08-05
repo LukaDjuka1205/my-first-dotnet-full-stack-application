@@ -2,6 +2,7 @@
 using FA.Client.Be.Repository.Entity;
 using FA.Client.Common.Contracts.Request.Users;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace FA.Client.Be.Controllers
 {
@@ -17,7 +18,8 @@ namespace FA.Client.Be.Controllers
         [Route("/users")]
         public IActionResult UsersGet()
         {
-            return Ok(_dbContext.Set<UserEntity>().AsQueryable().ToList());
+            return Ok(_dbContext.Set<UserEntity>().AsQueryable()
+                .Include(x => x.City).ToList());
         }
         
         [HttpPost]
@@ -61,8 +63,7 @@ namespace FA.Client.Be.Controllers
                 Username = request.Username,
                 Password = request.Password,
                 FirstName = request.FirstName,
-                LastName = request.LastName,
-                City = "something random"
+                LastName = request.LastName
             });
             _dbContext.SaveChanges();
             
