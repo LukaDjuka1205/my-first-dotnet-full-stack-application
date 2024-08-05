@@ -1,22 +1,33 @@
-﻿using FA.Client.Be.Request.Users;
+﻿using FA.Client.Be.Repository;
+using FA.Client.Be.Repository.Entity;
+using FA.Client.Common.Contracts.Request.Users;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FA.Client.Be.Controllers
 {
     public class UsersController : ControllerBase
     {
+        private readonly FADbContext _dbContext;
+        public UsersController(FADbContext dbContext)
+        {
+            _dbContext = dbContext;
+        }
+
         [HttpGet]
         [Route("/users")]
         public IActionResult UsersGet()
         {
-            throw new NotImplementedException();
+            return Ok(_dbContext.Set<UserEntity>().AsQueryable().ToList());
         }
         
         [HttpPost]
         [Route("/login")]
         public IActionResult UsersLogin([FromBody] UsersLoginRequest request)
         {
-            throw new NotImplementedException();
+            var qUsers = _dbContext.Set<UserEntity>().AsQueryable();
+
+            if (qUsers.Any(x => x.Username == request.Username && x.Password == request.Password))
+                return Ok();
             
             return BadRequest("Pogresno korisnicko ime ili lozinka!");
         }
@@ -42,7 +53,18 @@ namespace FA.Client.Be.Controllers
             if(request.LastName.Length < 3)
                 return BadRequest("Prezime mora imati najmanje 3 karaktera!");
 
-            throw new NotImplementedException();
+            if (_dbContext.Set<UserEntity>().AsQueryable().Any(x => x.Username == request.Username))
+                return BadRequest("Korisnik sa ovim imenom vec postoji!");
+
+            _dbContext.Add(new Repository.Entity.UserEntity()
+            {
+                Username = request.Username,
+                Password = request.Password,
+                FirstName = request.FirstName,
+                LastName = request.LastName,
+                City = "something random"
+            });
+            _dbContext.SaveChanges();
             
             return Ok();
         }

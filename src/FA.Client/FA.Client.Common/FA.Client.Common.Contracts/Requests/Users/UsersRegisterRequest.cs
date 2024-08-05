@@ -1,4 +1,4 @@
-namespace FA.Client.Be.Request.Users;
+namespace FA.Client.Common.Contracts.Request.Users;
 
 public class UsersRegisterRequest
 {
