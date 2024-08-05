@@ -1,5 +1,4 @@
-﻿using FA.Client.Be.Entity;
-using FA.Client.Be.Request.Users;
+﻿using FA.Client.Be.Request.Users;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FA.Client.Be.Controllers
@@ -10,15 +9,14 @@ namespace FA.Client.Be.Controllers
         [Route("/users")]
         public IActionResult UsersGet()
         {
-            return Ok(InMemoryDatabase.Users);
+            throw new NotImplementedException();
         }
         
         [HttpPost]
         [Route("/login")]
         public IActionResult UsersLogin([FromBody] UsersLoginRequest request)
         {
-            if(InMemoryDatabase.Users.Any(x => x.Username.Equals(request.Username) && x.Password.Equals(request.Password)))
-                return Ok();
+            throw new NotImplementedException();
             
             return BadRequest("Pogresno korisnicko ime ili lozinka!");
         }
@@ -43,15 +41,9 @@ namespace FA.Client.Be.Controllers
                 return BadRequest("Ime mora imati najmanje 3 karaktera!");
             if(request.LastName.Length < 3)
                 return BadRequest("Prezime mora imati najmanje 3 karaktera!");
+
+            throw new NotImplementedException();
             
-            InMemoryDatabase.Users.Add(new UserEntity
-            {
-                Id = InMemoryDatabase.Users.Count + 1,
-                Username = request.Username,
-                Password = request.Password,
-                FirstName = request.FirstName,
-                LastName = request.LastName
-            });
             return Ok();
         }
     }

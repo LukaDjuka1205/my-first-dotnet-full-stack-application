@@ -1,4 +1,4 @@
-namespace FA.Client.Be.Entity;
+namespace FA.Client.Be.Repository.Entity;
 
 public class UserEntity
 {
